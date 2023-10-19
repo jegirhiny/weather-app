@@ -1,9 +1,24 @@
 <!DOCTYPE html>
 <html>
     <head>
-
+        <link rel="stylesheet" href="index.css">
     </head>
     <body>
-        
+        <div class="weather">
+            <div>
+                <form id="form">
+                    <input id="search" placeholder="Search City or Zip Code">
+                </form>
+                <div id="suggestions"></div>
+            </div>
+            <div id="wether-info"></div>
+            <div>
+                <img id="default-img" src="./images/map.png">
+                <h1 id="notification"></h1>
+            </div>
+        </div>
+        <script src="https://unpkg.com/jquery"></script>
+        <script src="https://unpkg.com/axios/dist/axios.js"></script>
+        <script src="app.js"></script>
     </body>
 </html>
