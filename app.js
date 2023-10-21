@@ -6,10 +6,22 @@ const searchExtension = 'search.json';
 const $form = $('#form');
 const $input = $('#search');
 const $suggestions = $('#suggestions');
-const $notification = $('#notification');
+const $error = $('#error');
 
-const $wetherInfo = $('#wether-info');
-const $defaultImg = $('#default-img');
+const $weatherInfo = $('#weather-info');
+const $conditionImg = $('#condition-img');
+const $temperature = $('#temperature');
+const $precipitation = $('#precipitation');
+const $wind = $('#wind');
+const $uv = $('#uv');
+const $pressure = $('#pressure');
+const $visibility = $('#visibility');
+const $airQuality = $('#air-quality');
+const $date = $('#date');
+const $time = $('#time');
+
+const $settings = $('#settings')
+const $dropdown = $('#dropdown')
 
 $form.on('submit', async (e) => {
     e.preventDefault();
@@ -20,19 +32,17 @@ $form.on('submit', async (e) => {
         return;
     }
 
+    $error.removeClass('active');
     updateSuggestions([]);
-    $notification.text(``);
 
     try {
         let response = await axios.get(`${baseURL}/${weatherExtension}?key=${apiKey}&q=${searchTerm}&aqi=yes`);
         
         updateWeather(response.data);
     } catch (error) {
-        $defaultImg.attr('src', './images/forest-fire.png');
-        $notification.text(`Uh oh... that's a 404.`);
+        $weatherInfo.removeClass('active');
+        $error.addClass('active');
     }
-
-    $form.trigger('reset');
 })
 
 $form.on('keyup', async (e) => {
@@ -49,14 +59,19 @@ $form.on('keyup', async (e) => {
         return `${location.name}, ${location.region}` 
     })
 
-    updateSuggestions(locations.length === 0 ? ['No Locations'] : locations);
+    updateSuggestions(locations.length === 0 ? [] : locations);
 })
 
 $suggestions.on('click', (e) => {
     let location = e.target.innerText;
     $input.val(location);
 
+    updateSuggestions([]);
     $form.trigger('submit');
+})
+
+$settings.on('click', () => {
+    $dropdown.toggleClass('active');
 })
 
 function updateSuggestions(locations) {
@@ -68,9 +83,29 @@ function updateSuggestions(locations) {
     })
 }
 
+function getCurrentTime() {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const amOrPm = hours >= 12 ? 'PM' : 'AM';
+    const hours12 = hours % 12 || 12;
+
+    return `${hours12 < 10 ? '0' : ''}${hours12}:${minutes < 10 ? '0' : ''}${minutes} ${amOrPm}`;
+  }
+
 function updateWeather(weather) {
     let current = weather.current;
     let condition = current.condition;
 
-    $defaultImg.attr('src', condition.icon)
+    $conditionImg.attr('src', condition.icon);
+    $temperature.text(`${current.temp_f}°`);
+    $precipitation.text(`${current.precip_in}in`);
+    $wind.text(`${current.wind_mph}mph`);
+    $uv.text(`${current.uv}`);
+    $pressure.text(`${current.pressure_in}in`);
+    $visibility.text(`${current.vis_miles}mi`);
+    $airQuality.text(`${current.air_quality.co}co`);
+    $date.text(`${new Date().toDateString()}`);
+    $time.text(`${getCurrentTime()}`);
+    $weatherInfo.addClass('active');
 }
