@@ -19,9 +19,11 @@ const $visibility = $('#visibility');
 const $airQuality = $('#air-quality');
 const $date = $('#date');
 const $time = $('#time');
+const $condition = $('#condition');
 
-const $settings = $('#settings')
-const $dropdown = $('#dropdown')
+const $settings = $('#settings');
+const $dropdown = $('#dropdown');
+const $colorMode = $('#color-mode');
 
 $form.on('submit', async (e) => {
     e.preventDefault();
@@ -38,6 +40,8 @@ $form.on('submit', async (e) => {
     try {
         let response = await axios.get(`${baseURL}/${weatherExtension}?key=${apiKey}&q=${searchTerm}&aqi=yes`);
         
+        console.log(response)
+
         updateWeather(response.data);
     } catch (error) {
         $weatherInfo.removeClass('active');
@@ -83,6 +87,13 @@ function updateSuggestions(locations) {
     })
 }
 
+$colorMode.on('click', () => {
+    const $root = $(document.documentElement);
+    const theme = $root.attr('data-theme');
+
+    $root.attr('data-theme', theme == 'dark' ? 'light' : 'dark');
+})
+
 function getCurrentTime() {
     const now = new Date();
     const hours = now.getHours();
@@ -98,6 +109,7 @@ function updateWeather(weather) {
     let condition = current.condition;
 
     $conditionImg.attr('src', condition.icon);
+    $condition.text(`${condition.text}`)
     $temperature.text(`${current.temp_f}°`);
     $precipitation.text(`${current.precip_in}in`);
     $wind.text(`${current.wind_mph}mph`);

@@ -1,7 +1,35 @@
+:root[data-theme="dark"] {
+    --page-bg: #303030;
+    --weather-bg: #1e1e1e;
+    --suggestion-bg: var(--weather-bg);
+    --suggestion-hover: #2b2b2b;
+    --main-bg: var(--page-bg);
+    --settings-bg: var(--weather-bg);
+
+    --default-col: #ffffff;
+    --large-color: var(--default-col);
+    --med-color: var(--default-col);
+    --subscript-color: #656565;
+}
+
+:root[data-theme="light"] {
+    --page-bg: #ffffff;
+    --weather-bg: #1e1e1e;
+    --suggestion-bg: var(--weather-bg);
+    --suggestion-hover: #2b2b2b;
+    --main-bg: var(--page-bg);
+    --settings-bg: var(--weather-bg);
+
+    --default-col: var(--page-bg);
+    --large-color: var(--weather-bg);
+    --med-color: var(--weather-bg);
+    --subscript-color: #656565;
+}
+
 * {
     margin: 0;
     padding: 0;
-    color: #ffffff;
+    color: var(--default-col);
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-weight: normal;
 }
@@ -10,13 +38,13 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #303030;
+    background-color: var(--page-bg);
     height: 100vh;
 }
 
 .weather {
     display: flex;
-    background-color: #1e1e1e;
+    background-color: var(--weather-bg);
     flex-direction: column;
     border-radius: 3vh;
     align-items: center;
@@ -55,7 +83,7 @@ body {
 
 .suggestion {
     width: 30vw;
-    background-color: #1e1e1e;
+    background-color: var(--suggestion-bg);
     padding: 1vh 0 1vh 5vw;
     cursor: pointer;
 }
@@ -71,7 +99,7 @@ body {
 }
 
 .suggestion:hover {
-    background-color: #2b2b2b;
+    background-color: var(--suggestion-hover);
 }
 
 .weather-info {
@@ -84,11 +112,6 @@ body {
     transition: opacity 3s, max-height 3s;
 }
 
-.weather-info > div > h2 {
-    display: inline-flex;
-    font-size: 40px;
-}
-
 .active {
     display: flex !important;
     opacity: 1 !important;
@@ -99,11 +122,13 @@ body {
 .main-info {
     display: flex;
     justify-content: center;
+    flex-direction: column;
     align-items: center;
     height: 20vh;
     margin: 2vh 2vw;
     border-radius: 2vw;
-    background-color: #303030;
+    background-color: var(--main-bg);
+    padding: 2vh 0;
 }
 
 .main-info > img {
@@ -112,10 +137,17 @@ body {
 }
 
 .main-info > h1 {
+    color: var(--large-color);
     font-size: 100px;
     font-weight: 700;
 }
 
+.main-info > h2 {
+    color: var(--med-color);
+    display: inline-flex;
+    font-size: 40px;
+    text-transform: capitalize;
+}
 
 .field-img {
     height: 4vh;
@@ -127,10 +159,6 @@ body {
     flex-direction: row;
     justify-content: space-around;
     margin: 2vh 0;
-}
-
-.row-stack > h3 {
-    color: #303030;
 }
 
 .col-stack {
@@ -150,13 +178,13 @@ h1 {
 }
 
 h3 {
-    color: #303030;
+    color: var(--subscript-color);
 }
 
 .settings {
     display: flex;
     min-height: 8vh;
-    background-color: #1e1e1e;
+    background-color: var(--settings-bg);
     flex-direction: column;
     border-radius: 3vh;
     align-items: center;
