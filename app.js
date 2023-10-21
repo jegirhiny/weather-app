@@ -14,7 +14,7 @@ const $temperature = $('#temperature');
 const $precipitation = $('#precipitation');
 const $wind = $('#wind');
 const $uv = $('#uv');
-const $pressure = $('#pressure');
+const $humidity = $('#humidity');
 const $visibility = $('#visibility');
 const $airQuality = $('#air-quality');
 const $date = $('#date');
@@ -39,8 +39,6 @@ $form.on('submit', async (e) => {
 
     try {
         let response = await axios.get(`${baseURL}/${weatherExtension}?key=${apiKey}&q=${searchTerm}&aqi=yes`);
-        
-        console.log(response)
 
         updateWeather(response.data);
     } catch (error) {
@@ -114,7 +112,7 @@ function updateWeather(weather) {
     $precipitation.text(`${current.precip_in}in`);
     $wind.text(`${current.wind_mph}mph`);
     $uv.text(`${current.uv}`);
-    $pressure.text(`${current.pressure_in}in`);
+    $humidity.text(`${current.humidity}%`);
     $visibility.text(`${current.vis_miles}mi`);
     $airQuality.text(`${current.air_quality.co}co`);
     $date.text(`${new Date().toDateString()}`);
