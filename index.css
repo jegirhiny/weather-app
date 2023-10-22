@@ -223,18 +223,21 @@ h3 {
 
 .error {
     width: inherit;
-    display: none;
+    display: flex;
     flex-direction: column;
     align-items: center;
     overflow: hidden;
     opacity: 0;
     max-height: 0;
     transition: opacity 3s, max-height 3s;
-    margin-bottom: 3vh;
 }
 
 .error > img {
     height: 5vw;
     width: fit-content;
     margin-bottom: 1vh;
+}
+
+.space-bot {
+    margin-bottom: 3vh;
 }
