@@ -25,6 +25,8 @@ const $settings = $('#settings');
 const $dropdown = $('#dropdown');
 const $colorMode = $('#color-mode');
 
+const $root = $(document.documentElement);
+
 $form.on('submit', async (e) => {
     e.preventDefault();
 
@@ -86,10 +88,17 @@ function updateSuggestions(locations) {
 }
 
 $colorMode.on('click', () => {
-    const $root = $(document.documentElement);
-    const theme = $root.attr('data-theme');
+    $root.attr('data-theme', localStorage.getItem('data-theme') == 'dark' ? 'light' : 'dark');
 
-    $root.attr('data-theme', theme == 'dark' ? 'light' : 'dark');
+    localStorage.setItem('data-theme', $root.attr('data-theme'));
+})
+
+$(document).ready(() => {
+    if (localStorage.getItem('data-theme') === null) {
+        localStorage.setItem('data-theme', 'dark');
+    }
+
+    $root.attr('data-theme', localStorage.getItem('data-theme'));
 })
 
 function getCurrentTime() {
