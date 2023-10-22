@@ -2,6 +2,7 @@ const apiKey = '9b60528ef675419baa2214630222305';
 const baseURL = 'http://api.weatherapi.com/v1';
 const weatherExtension = 'current.json';
 const searchExtension = 'search.json';
+const forecastExtension = 'search.json';
 
 const $form = $('#form');
 const $input = $('#search');

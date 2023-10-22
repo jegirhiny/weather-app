@@ -5,6 +5,7 @@
     --suggestion-hover: #2b2b2b;
     --main-bg: var(--page-bg);
     --settings-bg: var(--weather-bg);
+    --hover-bg: #151515;
 
     --default-col: #ffffff;
     --large-color: var(--default-col);
@@ -19,6 +20,7 @@
     --suggestion-hover: #2b2b2b;
     --main-bg: var(--page-bg);
     --settings-bg: var(--weather-bg);
+    --hover-bg: var(--page-bg);
 
     --default-col: var(--page-bg);
     --large-color: var(--weather-bg);
@@ -46,8 +48,10 @@ body {
     display: flex;
     background-color: var(--weather-bg);
     flex-direction: column;
+    justify-content: center;
     border-radius: 3vh;
     align-items: center;
+    min-height: 10vh;
     width: 35vw;
 }
 
@@ -77,7 +81,7 @@ body {
 }
 
 .suggestions {
-    margin-top: 0.4vh;
+    margin-top: 1.5vh;
     position: absolute;
 }
 
@@ -196,10 +200,17 @@ h3 {
     transition: opacity 3s, max-height 3s;
 }
 
-.settings > img {
+.settings img {
     height: 3vw;
     cursor: pointer;
-    padding: 1vh 0;
+    padding: 10px 10px;
+    margin: 1vh 1vw;
+    transition: all 700ms ease;
+    border-radius: 100%;
+}
+
+.settings img:hover {
+    background-color: var(--hover-bg);
 }
 
 .dropdown {
@@ -212,13 +223,6 @@ h3 {
     opacity: 0;
     max-height: 0;
     transition: opacity 3s, max-height 3s;
-}
-
-.dropdown > img {
-    height: 3vw;
-    cursor: pointer;
-    width: fit-content;
-    padding: 1vh 0;
 }
 
 .error {
