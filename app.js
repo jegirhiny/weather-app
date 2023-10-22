@@ -28,6 +28,8 @@ const $imperialMetric = $('#imperial-metric');
 
 const $root = $(document.documentElement);
 
+let lastResponse = null;
+
 $form.on('submit', async (e) => {
     e.preventDefault();
 
@@ -41,9 +43,9 @@ $form.on('submit', async (e) => {
     updateSuggestions([]);
 
     try {
-        let response = await axios.get(`${baseURL}/${weatherExtension}?key=${apiKey}&q=${searchTerm}&aqi=yes`);
+        lastResponse = await axios.get(`${baseURL}/${weatherExtension}?key=${apiKey}&q=${searchTerm}&aqi=yes`);
 
-        updateWeather(response.data);
+        updateWeather(lastResponse.data);
     } catch (error) {
         $weatherInfo.removeClass('active');
         $error.addClass('active');
@@ -96,6 +98,15 @@ $colorMode.on('click', () => {
 
 $imperialMetric.on('click', () => {
     localStorage.setItem('unit-type', localStorage.getItem('unit-type') == 'imperial' ? 'metric' : 'imperial');
+
+    if ($weatherInfo.hasClass('active') && lastResponse !== null) {
+        let actual = lastResponse.data.current;
+
+        $temperature.text(localStorage.getItem('unit-type') == 'metric' ? `${actual.temp_f}°` : `${actual.wind_kph}°`);
+        $wind.text(localStorage.getItem('unit-type') == 'metric' ? `${actual.wind_mph}mph` : `${actual.wind_kph}kph`);
+        $precipitation.text(localStorage.getItem('unit-type') == 'metric' ? `${actual.precip_in}in` : `${actual.precip_mm}mm`);
+        $visibility.text(localStorage.getItem('unit-type') == 'metric' ? `${actual.vis_miles}mi` : `${actual.vis_km}km`);
+    }
 })
 
 $(document).ready(() => {
@@ -123,8 +134,6 @@ function getCurrentTime() {
 function updateWeather(weather) {
     let current = weather.current;
     let condition = current.condition;
-
-    console.log(current);
 
     $conditionImg.attr('src', condition.icon);
     $condition.text(`${condition.text}`);
