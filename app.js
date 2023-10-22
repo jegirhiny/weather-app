@@ -24,6 +24,7 @@ const $condition = $('#condition');
 const $settings = $('#settings');
 const $dropdown = $('#dropdown');
 const $colorMode = $('#color-mode');
+const $imperialMetric = $('#imperial-metric');
 
 const $root = $(document.documentElement);
 
@@ -93,9 +94,17 @@ $colorMode.on('click', () => {
     localStorage.setItem('data-theme', $root.attr('data-theme'));
 })
 
+$imperialMetric.on('click', () => {
+    localStorage.setItem('unit-type', localStorage.getItem('unit-type') == 'imperial' ? 'metric' : 'imperial');
+})
+
 $(document).ready(() => {
     if (localStorage.getItem('data-theme') === null) {
         localStorage.setItem('data-theme', 'dark');
+    }
+
+    if (localStorage.getItem('unit-type') === null) {
+        localStorage.setItem('unit-type', 'metric');
     }
 
     $root.attr('data-theme', localStorage.getItem('data-theme'));
@@ -115,16 +124,21 @@ function updateWeather(weather) {
     let current = weather.current;
     let condition = current.condition;
 
+    console.log(current);
+
     $conditionImg.attr('src', condition.icon);
-    $condition.text(`${condition.text}`)
-    $temperature.text(`${current.temp_f}°`);
-    $precipitation.text(`${current.precip_in}in`);
-    $wind.text(`${current.wind_mph}mph`);
+    $condition.text(`${condition.text}`);
+
+    $temperature.text(localStorage.getItem('unit-type') == 'metric' ? `${current.temp_f}°` : `${current.wind_kph}°`);
+    $wind.text(localStorage.getItem('unit-type') == 'metric' ? `${current.wind_mph}mph` : `${current.wind_kph}kph`);
+    $precipitation.text(localStorage.getItem('unit-type') == 'metric' ? `${current.precip_in}in` : `${current.precip_mm}mm`);
+    $visibility.text(localStorage.getItem('unit-type') == 'metric' ? `${current.vis_miles}mi` : `${current.vis_km}km`);
+
     $uv.text(`${current.uv}`);
     $humidity.text(`${current.humidity}%`);
-    $visibility.text(`${current.vis_miles}mi`);
     $airQuality.text(`${current.air_quality.co}co`);
     $date.text(`${new Date().toDateString()}`);
     $time.text(`${getCurrentTime()}`);
+
     $weatherInfo.addClass('active');
 }
