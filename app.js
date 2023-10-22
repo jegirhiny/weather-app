@@ -145,7 +145,7 @@ function updateWeather(weather) {
 
     $uv.text(`${current.uv}`);
     $humidity.text(`${current.humidity}%`);
-    $airQuality.text(`${current.air_quality.co}co`);
+    $airQuality.text(`${current.air_quality['us-epa-index']}`);
     $date.text(`${new Date().toDateString()}`);
     $time.text(`${getCurrentTime()}`);
 
