@@ -61,7 +61,7 @@ $form.on('submit', async (e) => {
 
         const timestamps = currentRes.data.forecast.forecastday[0].hour;
         const xValues = timestamps.map(data => militaryToStandard(data.time.substring(data.time.indexOf(' ') + 1)));
-        const yValues = timestamps.map(data => data.temp_f);
+        const yValues = timestamps.map(data => localStorage.getItem('unit-type') == 'imperial' ? data.temp_f : data.temp_c);
         
         const chartCanvas = $('<canvas id="myChart"></canvas>').get(0);
 
@@ -80,12 +80,17 @@ $form.on('submit', async (e) => {
                     borderColor: "#1e1e1e",
                     pointBackgroundColor: "white",
                     pointBorderColor: "white",
+                    pointRadius: 4,
                     data: yValues
                 }]
             },
             options: {
                 legend: {
                     display: false
+                },
+                tooltips: {
+                    titleFontSize: 20,
+                    bodyFontSize: 40
                 }
             }
         });
@@ -143,10 +148,10 @@ $imperialMetric.on('click', () => {
     if ($weatherInfo.hasClass('active') && currentRes !== null) {
         let actual = currentRes.data.current;
 
-        $temperature.text(localStorage.getItem('unit-type') == 'metric' ? `${actual.temp_f}°` : `${actual.wind_kph}°`);
-        $wind.text(localStorage.getItem('unit-type') == 'metric' ? `${actual.wind_mph}mph` : `${actual.wind_kph}kph`);
-        $precipitation.text(localStorage.getItem('unit-type') == 'metric' ? `${actual.precip_in}in` : `${actual.precip_mm}mm`);
-        $visibility.text(localStorage.getItem('unit-type') == 'metric' ? `${actual.vis_miles}mi` : `${actual.vis_km}km`);
+        $temperature.text(localStorage.getItem('unit-type') == 'imperial' ? `${actual.temp_f}°` : `${actual.wind_kph}°`);
+        $wind.text(localStorage.getItem('unit-type') == 'imperial' ? `${actual.wind_mph}mph` : `${actual.wind_kph}kph`);
+        $precipitation.text(localStorage.getItem('unit-type') == 'imperial' ? `${actual.precip_in}in` : `${actual.precip_mm}mm`);
+        $visibility.text(localStorage.getItem('unit-type') == 'imperial' ? `${actual.vis_miles}mi` : `${actual.vis_km}km`);
     }
 })
 
@@ -156,7 +161,7 @@ $(document).ready(() => {
     }
 
     if (localStorage.getItem('unit-type') === null) {
-        localStorage.setItem('unit-type', 'metric');
+        localStorage.setItem('unit-type', 'imperial');
     }
 
     $root.attr('data-theme', localStorage.getItem('data-theme'));
@@ -194,10 +199,10 @@ function updateWeather(weather) {
     $conditionImg.attr('src', condition.icon);
     $condition.text(`${condition.text}`);
 
-    $temperature.text(localStorage.getItem('unit-type') == 'metric' ? `${current.temp_f}°` : `${current.wind_kph}°`);
-    $wind.text(localStorage.getItem('unit-type') == 'metric' ? `${current.wind_mph}mph` : `${current.wind_kph}kph`);
-    $precipitation.text(localStorage.getItem('unit-type') == 'metric' ? `${current.precip_in}in` : `${current.precip_mm}mm`);
-    $visibility.text(localStorage.getItem('unit-type') == 'metric' ? `${current.vis_miles}mi` : `${current.vis_km}km`);
+    $temperature.text(localStorage.getItem('unit-type') == 'imperial' ? `${current.temp_f}°` : `${current.temp_c}°`);
+    $wind.text(localStorage.getItem('unit-type') == 'imperial' ? `${current.wind_mph}mph` : `${current.wind_kph}kph`);
+    $precipitation.text(localStorage.getItem('unit-type') == 'imperial' ? `${current.precip_in}in` : `${current.precip_mm}mm`);
+    $visibility.text(localStorage.getItem('unit-type') == 'imperial' ? `${current.vis_miles}mi` : `${current.vis_km}km`);
 
     $uv.text(`${current.uv}`);
     $humidity.text(`${current.humidity}%`);
