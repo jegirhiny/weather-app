@@ -135,21 +135,17 @@ body {
     padding: 2vh 0;
 }
 
-.main-info > img {
-    width: 4vw;
-    height: fit-content;
+.main-info:hover {
+    cursor: pointer;
 }
 
-.main-info > h1 {
+.main-info  h1 {
     color: var(--large-color);
-    font-size: 100px;
-    font-weight: 700;
 }
 
-.main-info > h2 {
+.main-info  h2 {
     color: var(--med-color);
-    display: inline-flex;
-    font-size: 40px;
+    font-size: 30px;
     text-transform: capitalize;
 }
 
@@ -244,4 +240,14 @@ h3 {
 
 .space-bot {
     margin-bottom: 3vh;
+}
+
+canvas {
+    display: none !important;
+    height: 20vh !important;
+    width:  28vw !important;
+}
+
+.inactive {
+    display: none;
 }

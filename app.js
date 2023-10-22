@@ -2,7 +2,7 @@ const apiKey = '9b60528ef675419baa2214630222305';
 const baseURL = 'http://api.weatherapi.com/v1';
 const weatherExtension = 'current.json';
 const searchExtension = 'search.json';
-const forecastExtension = 'search.json';
+const forecastExtension = 'forecast.json';
 
 const $form = $('#form');
 const $input = $('#search');
@@ -10,6 +10,7 @@ const $suggestions = $('#suggestions');
 const $error = $('#error');
 
 const $weatherInfo = $('#weather-info');
+const $mainInfo = $('#main-info');
 const $conditionImg = $('#condition-img');
 const $temperature = $('#temperature');
 const $precipitation = $('#precipitation');
@@ -26,10 +27,11 @@ const $settings = $('#settings');
 const $dropdown = $('#dropdown');
 const $colorMode = $('#color-mode');
 const $imperialMetric = $('#imperial-metric');
+const $content = $('#content');
 
 const $root = $(document.documentElement);
 
-let lastResponse = null;
+let currentRes = null;
 
 $form.on('submit', async (e) => {
     e.preventDefault();
@@ -44,9 +46,51 @@ $form.on('submit', async (e) => {
     updateSuggestions([]);
 
     try {
-        lastResponse = await axios.get(`${baseURL}/${weatherExtension}?key=${apiKey}&q=${searchTerm}&aqi=yes`);
+        currentRes = await axios.get(`${baseURL}/${forecastExtension}?key=${apiKey}&q=${searchTerm}&aqi=yes`);
 
-        updateWeather(lastResponse.data);
+        const $chart = $('#myChart');
+        let wasActive = false;
+
+        if ($chart.length) {
+            if($chart.get(0).classList.contains('active')) {
+                wasActive = true;
+            }
+
+            $chart.remove();
+        }
+
+        const timestamps = currentRes.data.forecast.forecastday[0].hour;
+        const xValues = timestamps.map(data => militaryToStandard(data.time.substring(data.time.indexOf(' ') + 1)));
+        const yValues = timestamps.map(data => data.temp_f);
+        
+        const chartCanvas = $('<canvas id="myChart"></canvas>').get(0);
+
+        if(wasActive) {
+            $(chartCanvas).addClass('active');
+        }
+
+        $mainInfo.append(chartCanvas);
+        
+        new Chart(chartCanvas, {
+            type: "line",
+            data: {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: "#1e1e1e",
+                    borderColor: "#1e1e1e",
+                    pointBackgroundColor: "white",
+                    pointBorderColor: "white",
+                    data: yValues
+                }]
+            },
+            options: {
+                legend: {
+                    display: false
+                }
+            }
+        });
+
+        updateWeather(currentRes.data);
     } catch (error) {
         $weatherInfo.removeClass('active');
         $error.addClass('active');
@@ -70,6 +114,11 @@ $form.on('keyup', async (e) => {
     updateSuggestions(locations.length === 0 ? [] : locations);
 })
 
+$mainInfo.on('click', () => {
+    $content.toggleClass('inactive');
+    $('#myChart').toggleClass('active');
+})
+
 $suggestions.on('click', (e) => {
     let location = e.target.innerText;
     $input.val(location);
@@ -82,15 +131,6 @@ $settings.on('click', () => {
     $dropdown.toggleClass('active');
 })
 
-function updateSuggestions(locations) {
-    $suggestions.empty();
-
-    locations.forEach((location) => {
-        let $ul = $("<ul>").addClass("suggestion").text(location);
-        $suggestions.append($ul);
-    })
-}
-
 $colorMode.on('click', () => {
     $root.attr('data-theme', localStorage.getItem('data-theme') == 'dark' ? 'light' : 'dark');
 
@@ -100,8 +140,8 @@ $colorMode.on('click', () => {
 $imperialMetric.on('click', () => {
     localStorage.setItem('unit-type', localStorage.getItem('unit-type') == 'imperial' ? 'metric' : 'imperial');
 
-    if ($weatherInfo.hasClass('active') && lastResponse !== null) {
-        let actual = lastResponse.data.current;
+    if ($weatherInfo.hasClass('active') && currentRes !== null) {
+        let actual = currentRes.data.current;
 
         $temperature.text(localStorage.getItem('unit-type') == 'metric' ? `${actual.temp_f}°` : `${actual.wind_kph}°`);
         $wind.text(localStorage.getItem('unit-type') == 'metric' ? `${actual.wind_mph}mph` : `${actual.wind_kph}kph`);
@@ -121,6 +161,21 @@ $(document).ready(() => {
 
     $root.attr('data-theme', localStorage.getItem('data-theme'));
 })
+
+function militaryToStandard(militaryTime) {
+    const [h, m] = militaryTime.split(':');
+
+    return `${((h % 12) || 12)}:${m} ${h < 12 ? 'AM' : 'PM'}`;
+  }
+
+function updateSuggestions(locations) {
+    $suggestions.empty();
+
+    locations.forEach((location) => {
+        let $ul = $("<ul>").addClass("suggestion").text(location);
+        $suggestions.append($ul);
+    })
+}
 
 function getCurrentTime() {
     const now = new Date();
