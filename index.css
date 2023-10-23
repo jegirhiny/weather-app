@@ -257,3 +257,8 @@ h3 {
 .hourly * {
     text-align: center;
 }
+
+.hourly h3 {
+    font-size: 22px;
+    margin-bottom: 0.5vh;
+}
