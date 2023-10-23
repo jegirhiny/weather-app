@@ -76,8 +76,19 @@ $form.on('keyup', async (e) => {
 })
 
 $mainInfo.on('click', () => {
-    $content.toggleClass('inactive');
-    $hourly.toggleClass('inactive');
+    if($content.hasClass('inactive')) {
+        $hourly.fadeOut(300, () => {
+            $hourly.toggleClass('inactive');
+            $content.toggleClass('inactive');
+            $content.fadeIn(300);
+        })
+    } else {
+        $content.fadeOut(300, () => {
+            $hourly.toggleClass('inactive');
+            $content.toggleClass('inactive');
+            $hourly.fadeIn(300);
+        })
+    }
 })
 
 $suggestions.on('click', (e) => {
