@@ -184,13 +184,13 @@ h3 {
 
 .settings {
     display: flex;
-    min-height: 8vh;
+    min-height: 10vh;
     background-color: var(--settings-bg);
     flex-direction: column;
     border-radius: 3vh;
     align-items: center;
     justify-content: center;
-    width: 5vw;
+    width: fit-content;
     height: fit-content;
     margin-left: 2vw;
     position: relative;
@@ -200,13 +200,13 @@ h3 {
 .settings img {
     height: 3vw;
     cursor: pointer;
-    padding: 10px 10px;
-    margin: 1vh 1vw;
+    padding: 10px;
+    margin: 1vh 0.5vw;
     transition: all 700ms ease;
     border-radius: 100%;
 }
 
-.settings img:hover {
+.settings img:hover, h2:hover {
     background-color: var(--hover-bg);
 }
 
@@ -220,6 +220,23 @@ h3 {
     opacity: 0;
     max-height: 0;
     transition: opacity 3s, max-height 3s;
+}
+
+.dropdown > h2 {
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 3vw;
+    cursor: pointer;
+    padding: 10px;
+    margin: 1vh 0.5vw;
+    transition: all 700ms ease;
+    border-radius: 100%;
+    color: #303030;
+    width: 3vw;
+    font-size: 3vw;
+    font-weight: 600;
 }
 
 .error {

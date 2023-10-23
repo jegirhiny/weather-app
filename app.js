@@ -78,16 +78,16 @@ $form.on('keyup', async (e) => {
 
 $mainInfo.on('click', () => {
     if($content.hasClass('inactive')) {
-        $hourly.fadeOut(300, () => {
+        $hourly.fadeOut(400, () => {
             $hourly.toggleClass('inactive');
             $content.toggleClass('inactive');
-            $content.fadeIn(300);
+            $content.fadeIn(400);
         })
     } else {
-        $content.fadeOut(300, () => {
+        $content.fadeOut(400, () => {
             $hourly.toggleClass('inactive');
             $content.toggleClass('inactive');
-            $hourly.fadeIn(300);
+            $hourly.fadeIn(400);
         })
     }
 })
@@ -113,6 +113,12 @@ $colorMode.on('click', () => {
 $imperialMetric.on('click', () => {
     localStorage.setItem('unit-type', localStorage.getItem('unit-type') == 'imperial' ? 'metric' : 'imperial');
 
+    if(localStorage.getItem('unit-type') == 'imperial') {
+        $imperialMetric.text('F');
+    } else {
+        $imperialMetric.text('C');
+    }
+
     if ($weatherInfo.hasClass('active') && response !== null) {
         let actual = response.data.current;
 
@@ -132,6 +138,12 @@ $(document).ready(() => {
 
     if (localStorage.getItem('unit-type') === null) {
         localStorage.setItem('unit-type', 'imperial');
+    }
+
+    if(localStorage.getItem('unit-type') == null || localStorage.getItem('unit-type') == 'imperial') {
+        $imperialMetric.text('F');
+    } else {
+        $imperialMetric.text('C');
     }
 
     $root.attr('data-theme', localStorage.getItem('data-theme'));
@@ -176,9 +188,9 @@ function updateWeather() {
 function updateHourly() {
     let forecastDay = response.data.forecast.forecastday[0];
 
-    let morning = forecastDay.hour[5];
-    let afternoon = forecastDay.hour[11];
-    let evening = forecastDay.hour[17];
+    let morning = forecastDay.hour[8];
+    let afternoon = forecastDay.hour[14];
+    let evening = forecastDay.hour[21];
 
     let chanceOfRain = 0, chanceOfSnow = 0;
 
