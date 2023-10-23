@@ -143,10 +143,11 @@ body {
     color: var(--large-color);
 }
 
-.main-info  h2 {
+.main-info h2 {
     color: var(--med-color);
-    font-size: 30px;
     text-transform: capitalize;
+    font-size: 30px;
+    font-weight: 500;
 }
 
 .field-img {
