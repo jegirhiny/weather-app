@@ -48,54 +48,8 @@ $form.on('submit', async (e) => {
     try {
         currentRes = await axios.get(`${baseURL}/${forecastExtension}?key=${apiKey}&q=${searchTerm}&aqi=yes`);
 
-        const $chart = $('#myChart');
-        let wasActive = false;
-
-        if ($chart.length) {
-            if($chart.get(0).classList.contains('active')) {
-                wasActive = true;
-            }
-
-            $chart.remove();
-        }
-
-        const timestamps = currentRes.data.forecast.forecastday[0].hour;
-        const xValues = timestamps.map(data => militaryToStandard(data.time.substring(data.time.indexOf(' ') + 1)));
-        const yValues = timestamps.map(data => localStorage.getItem('unit-type') == 'imperial' ? data.temp_f : data.temp_c);
-        
-        const chartCanvas = $('<canvas id="myChart"></canvas>').get(0);
-
-        if(wasActive) {
-            $(chartCanvas).addClass('active');
-        }
-
-        $mainInfo.append(chartCanvas);
-        
-        new Chart(chartCanvas, {
-            type: "line",
-            data: {
-                labels: xValues,
-                datasets: [{
-                    backgroundColor: "#1e1e1e",
-                    borderColor: "#1e1e1e",
-                    pointBackgroundColor: "white",
-                    pointBorderColor: "white",
-                    pointRadius: 4,
-                    data: yValues
-                }]
-            },
-            options: {
-                legend: {
-                    display: false
-                },
-                tooltips: {
-                    titleFontSize: 20,
-                    bodyFontSize: 40
-                }
-            }
-        });
-
-        updateWeather(currentRes.data);
+        createGraph();
+        updateWeather();
     } catch (error) {
         $weatherInfo.removeClass('active');
         $error.addClass('active');
@@ -152,6 +106,8 @@ $imperialMetric.on('click', () => {
         $wind.text(localStorage.getItem('unit-type') == 'imperial' ? `${actual.wind_mph}mph` : `${actual.wind_kph}kph`);
         $precipitation.text(localStorage.getItem('unit-type') == 'imperial' ? `${actual.precip_in}in` : `${actual.precip_mm}mm`);
         $visibility.text(localStorage.getItem('unit-type') == 'imperial' ? `${actual.vis_miles}mi` : `${actual.vis_km}km`);
+
+        createGraph();
     }
 })
 
@@ -166,6 +122,55 @@ $(document).ready(() => {
 
     $root.attr('data-theme', localStorage.getItem('data-theme'));
 })
+
+function createGraph() {
+    const $chart = $('#myChart');
+    let wasActive = false;
+
+    if ($chart.length) {
+        if($chart.get(0).classList.contains('active')) {
+            wasActive = true;
+        }
+
+        $chart.remove();
+    }
+
+    const timestamps = currentRes.data.forecast.forecastday[0].hour;
+    const xValues = timestamps.map(data => militaryToStandard(data.time.substring(data.time.indexOf(' ') + 1)));
+    const yValues = timestamps.map(data => localStorage.getItem('unit-type') == 'imperial' ? data.temp_f : data.temp_c);
+    
+    const chartCanvas = $('<canvas id="myChart"></canvas>').get(0);
+
+    if(wasActive) {
+        $(chartCanvas).addClass('active');
+    }
+
+    $mainInfo.append(chartCanvas);
+    
+    new Chart(chartCanvas, {
+        type: "line",
+        data: {
+            labels: xValues,
+            datasets: [{
+                backgroundColor: "#1e1e1e",
+                borderColor: "#1e1e1e",
+                pointBackgroundColor: "white",
+                pointBorderColor: "white",
+                pointRadius: 4,
+                data: yValues
+            }]
+        },
+        options: {
+            legend: {
+                display: false
+            },
+            tooltips: {
+                titleFontSize: 20,
+                bodyFontSize: 40
+            }
+        }
+    });
+}
 
 function militaryToStandard(militaryTime) {
     const [h, m] = militaryTime.split(':');
@@ -192,8 +197,8 @@ function getCurrentTime() {
     return `${hours12 < 10 ? '0' : ''}${hours12}:${minutes < 10 ? '0' : ''}${minutes} ${amOrPm}`;
   }
 
-function updateWeather(weather) {
-    let current = weather.current;
+function updateWeather() {
+    let current = currentRes.data.current;
     let condition = current.condition;
 
     $conditionImg.attr('src', condition.icon);
