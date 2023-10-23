@@ -11,6 +11,7 @@ const $error = $('#error');
 
 const $weatherInfo = $('#weather-info');
 const $mainInfo = $('#main-info');
+const $hourly = $('#hourly');
 const $conditionImg = $('#condition-img');
 const $temperature = $('#temperature');
 const $precipitation = $('#precipitation');
@@ -31,6 +32,11 @@ const $content = $('#content');
 
 const $root = $(document.documentElement);
 
+const $morningTemp = $('#morning-temp');
+const $afternoonTemp = $('#afternoon-temp');
+const $eveningTemp = $('#evening-temp');
+const $overnightTemp = $('#overnight-temp');
+
 let currentRes = null;
 
 $form.on('submit', async (e) => {
@@ -48,8 +54,8 @@ $form.on('submit', async (e) => {
     try {
         currentRes = await axios.get(`${baseURL}/${forecastExtension}?key=${apiKey}&q=${searchTerm}&aqi=yes`);
 
-        createGraph();
         updateWeather();
+        updateHourly();
     } catch (error) {
         $weatherInfo.removeClass('active');
         $error.addClass('active');
@@ -75,7 +81,7 @@ $form.on('keyup', async (e) => {
 
 $mainInfo.on('click', () => {
     $content.toggleClass('inactive');
-    $('#myChart').toggleClass('active');
+    $hourly.toggleClass('inactive');
 })
 
 $suggestions.on('click', (e) => {
@@ -106,8 +112,6 @@ $imperialMetric.on('click', () => {
         $wind.text(localStorage.getItem('unit-type') == 'imperial' ? `${actual.wind_mph}mph` : `${actual.wind_kph}kph`);
         $precipitation.text(localStorage.getItem('unit-type') == 'imperial' ? `${actual.precip_in}in` : `${actual.precip_mm}mm`);
         $visibility.text(localStorage.getItem('unit-type') == 'imperial' ? `${actual.vis_miles}mi` : `${actual.vis_km}km`);
-
-        createGraph();
     }
 })
 
@@ -123,60 +127,6 @@ $(document).ready(() => {
     $root.attr('data-theme', localStorage.getItem('data-theme'));
 })
 
-function createGraph() {
-    const $chart = $('#myChart');
-    let wasActive = false;
-
-    if ($chart.length) {
-        if($chart.get(0).classList.contains('active')) {
-            wasActive = true;
-        }
-
-        $chart.remove();
-    }
-
-    const timestamps = currentRes.data.forecast.forecastday[0].hour;
-    const xValues = timestamps.map(data => militaryToStandard(data.time.substring(data.time.indexOf(' ') + 1)));
-    const yValues = timestamps.map(data => localStorage.getItem('unit-type') == 'imperial' ? data.temp_f : data.temp_c);
-    
-    const chartCanvas = $('<canvas id="myChart"></canvas>').get(0);
-
-    if(wasActive) {
-        $(chartCanvas).addClass('active');
-    }
-
-    $mainInfo.append(chartCanvas);
-    
-    new Chart(chartCanvas, {
-        type: "line",
-        data: {
-            labels: xValues,
-            datasets: [{
-                backgroundColor: "#1e1e1e",
-                borderColor: "#1e1e1e",
-                pointBackgroundColor: "white",
-                pointBorderColor: "white",
-                pointRadius: 4,
-                data: yValues
-            }]
-        },
-        options: {
-            legend: {
-                display: false
-            },
-            tooltips: {
-                titleFontSize: 20,
-                bodyFontSize: 40,
-                callbacks: {
-                    label: function (tooltipItem, data) {
-                        return tooltipItem.yLabel + '°';
-                    }
-                }
-            }
-        }
-    });
-}
-
 function militaryToStandard(militaryTime) {
     const [h, m] = militaryTime.split(':');
 
@@ -191,16 +141,6 @@ function updateSuggestions(locations) {
         $suggestions.append($ul);
     })
 }
-
-function getCurrentTime() {
-    const now = new Date();
-    const hours = now.getHours();
-    const minutes = now.getMinutes();
-    const amOrPm = hours >= 12 ? 'PM' : 'AM';
-    const hours12 = hours % 12 || 12;
-
-    return `${hours12 < 10 ? '0' : ''}${hours12}:${minutes < 10 ? '0' : ''}${minutes} ${amOrPm}`;
-  }
 
 function updateWeather() {
     let current = currentRes.data.current;
@@ -222,3 +162,25 @@ function updateWeather() {
 
     $weatherInfo.addClass('active');
 }
+
+function updateHourly() {
+    let morning = currentRes.data.forecast.forecastday[0].hour[6];
+    let afternoon = currentRes.data.forecast.forecastday[0].hour[12];
+    let evening = currentRes.data.forecast.forecastday[0].hour[17];
+    let overnight = currentRes.data.forecast.forecastday[0].hour[22];
+
+    $morningTemp.text(localStorage.getItem('unit-type') == 'imperial' ? `${morning.temp_f}°` : `${morning.temp_c}°`);
+    $afternoonTemp.text(localStorage.getItem('unit-type') == 'imperial' ? `${afternoon.temp_f}°` : `${afternoon.temp_c}°`);
+    $eveningTemp.text(localStorage.getItem('unit-type') == 'imperial' ? `${evening.temp_f}°` : `${evening.temp_c}°`);
+    $overnightTemp.text(localStorage.getItem('unit-type') == 'imperial' ? `${overnight.temp_f}°` : `${overnight.temp_c}°`);
+}
+
+function getCurrentTime() {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const amOrPm = hours >= 12 ? 'PM' : 'AM';
+    const hours12 = hours % 12 || 12;
+
+    return `${hours12 < 10 ? '0' : ''}${hours12}:${minutes < 10 ? '0' : ''}${minutes} ${amOrPm}`;
+  }

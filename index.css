@@ -242,12 +242,18 @@ h3 {
     margin-bottom: 3vh;
 }
 
-canvas {
+.inactive {
     display: none !important;
-    height: 20vh !important;
-    width:  28vw !important;
 }
 
-.inactive {
-    display: none;
+.hourly {
+    display: flex;
+}
+
+.hourly > div {
+    margin: 0 1.5vw;
+}
+
+.hourly * {
+    text-align: center;
 }
