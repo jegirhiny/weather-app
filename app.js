@@ -31,7 +31,8 @@ const $content = $('#content');
 const $morningTemp = $('#morning-temp');
 const $afternoonTemp = $('#afternoon-temp');
 const $eveningTemp = $('#evening-temp');
-const $overnightTemp = $('#overnight-temp');
+const $chanceRain = $('#chance-rain');
+const $chanceSnow = $('#chance-snow');
 
 let response = null;
 
@@ -173,15 +174,27 @@ function updateWeather() {
 }
 
 function updateHourly() {
-    let morning = response.data.forecast.forecastday[0].hour[6];
-    let afternoon = response.data.forecast.forecastday[0].hour[12];
-    let evening = response.data.forecast.forecastday[0].hour[17];
-    let overnight = response.data.forecast.forecastday[0].hour[22];
+    let forecastDay = response.data.forecast.forecastday[0];
+
+    let morning = forecastDay.hour[5];
+    let afternoon = forecastDay.hour[11];
+    let evening = forecastDay.hour[17];
+
+    let chanceOfRain = 0, chanceOfSnow = 0;
+
+    forecastDay.hour.forEach((hour) => {
+        chanceOfRain += hour.chance_of_rain;
+        chanceOfSnow += hour.chance_of_snow;
+    });
+
+    chanceOfRain = Math.min(chanceOfRain, 100);
+    chanceOfSnow = Math.min(chanceOfSnow, 100);
 
     $morningTemp.text(localStorage.getItem('unit-type') == 'imperial' ? `${morning.temp_f}°` : `${morning.temp_c}°`);
     $afternoonTemp.text(localStorage.getItem('unit-type') == 'imperial' ? `${afternoon.temp_f}°` : `${afternoon.temp_c}°`);
     $eveningTemp.text(localStorage.getItem('unit-type') == 'imperial' ? `${evening.temp_f}°` : `${evening.temp_c}°`);
-    $overnightTemp.text(localStorage.getItem('unit-type') == 'imperial' ? `${overnight.temp_f}°` : `${overnight.temp_c}°`);
+    $chanceRain.text(`${chanceOfRain}%`);
+    $chanceSnow.text(`${chanceOfSnow}%`);
 }
 
 function getCurrentTime() {
