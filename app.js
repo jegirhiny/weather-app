@@ -4,11 +4,11 @@ const weatherExtension = 'current.json';
 const searchExtension = 'search.json';
 const forecastExtension = 'forecast.json';
 
+const $root = $(document.documentElement);
 const $form = $('#form');
 const $input = $('#search');
 const $suggestions = $('#suggestions');
 const $error = $('#error');
-
 const $weatherInfo = $('#weather-info');
 const $mainInfo = $('#main-info');
 const $hourly = $('#hourly');
@@ -23,21 +23,17 @@ const $airQuality = $('#air-quality');
 const $date = $('#date');
 const $time = $('#time');
 const $condition = $('#condition');
-
 const $settings = $('#settings');
 const $dropdown = $('#dropdown');
 const $colorMode = $('#color-mode');
 const $imperialMetric = $('#imperial-metric');
 const $content = $('#content');
-
-const $root = $(document.documentElement);
-
 const $morningTemp = $('#morning-temp');
 const $afternoonTemp = $('#afternoon-temp');
 const $eveningTemp = $('#evening-temp');
 const $overnightTemp = $('#overnight-temp');
 
-let currentRes = null;
+let response = null;
 
 $form.on('submit', async (e) => {
     e.preventDefault();
@@ -52,7 +48,7 @@ $form.on('submit', async (e) => {
     updateSuggestions([]);
 
     try {
-        currentRes = await axios.get(`${baseURL}/${forecastExtension}?key=${apiKey}&q=${searchTerm}&aqi=yes`);
+        response = await axios.get(`${baseURL}/${forecastExtension}?key=${apiKey}&q=${searchTerm}&aqi=yes`);
 
         updateWeather();
         updateHourly();
@@ -73,7 +69,7 @@ $form.on('keyup', async (e) => {
     let response = await axios.get(`${baseURL}/${searchExtension}?key=${apiKey}&q=${searchTerm}&aqi=yes`);
 
     let locations = response.data.map((location) => {
-        return `${location.name}, ${location.region}` 
+        return `${location.name}, ${location.region}`;
     })
 
     updateSuggestions(locations.length === 0 ? [] : locations);
@@ -105,8 +101,8 @@ $colorMode.on('click', () => {
 $imperialMetric.on('click', () => {
     localStorage.setItem('unit-type', localStorage.getItem('unit-type') == 'imperial' ? 'metric' : 'imperial');
 
-    if ($weatherInfo.hasClass('active') && currentRes !== null) {
-        let actual = currentRes.data.current;
+    if ($weatherInfo.hasClass('active') && response !== null) {
+        let actual = response.data.current;
 
         $temperature.text(localStorage.getItem('unit-type') == 'imperial' ? `${actual.temp_f}°` : `${actual.temp_c}°`);
         $wind.text(localStorage.getItem('unit-type') == 'imperial' ? `${actual.wind_mph}mph` : `${actual.wind_kph}kph`);
@@ -143,7 +139,7 @@ function updateSuggestions(locations) {
 }
 
 function updateWeather() {
-    let current = currentRes.data.current;
+    let current = response.data.current;
     let condition = current.condition;
 
     $conditionImg.attr('src', condition.icon);
@@ -164,10 +160,10 @@ function updateWeather() {
 }
 
 function updateHourly() {
-    let morning = currentRes.data.forecast.forecastday[0].hour[6];
-    let afternoon = currentRes.data.forecast.forecastday[0].hour[12];
-    let evening = currentRes.data.forecast.forecastday[0].hour[17];
-    let overnight = currentRes.data.forecast.forecastday[0].hour[22];
+    let morning = response.data.forecast.forecastday[0].hour[6];
+    let afternoon = response.data.forecast.forecastday[0].hour[12];
+    let evening = response.data.forecast.forecastday[0].hour[17];
+    let overnight = response.data.forecast.forecastday[0].hour[22];
 
     $morningTemp.text(localStorage.getItem('unit-type') == 'imperial' ? `${morning.temp_f}°` : `${morning.temp_c}°`);
     $afternoonTemp.text(localStorage.getItem('unit-type') == 'imperial' ? `${afternoon.temp_f}°` : `${afternoon.temp_c}°`);
