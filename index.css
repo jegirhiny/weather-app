@@ -206,7 +206,7 @@ h3 {
     border-radius: 100%;
 }
 
-.settings img:hover, h2:hover {
+.settings img:hover {
     background-color: var(--hover-bg);
 }
 
@@ -237,6 +237,10 @@ h3 {
     width: 3vw;
     font-size: 3vw;
     font-weight: 600;
+}
+
+.dropdown > h2:hover {
+    background-color: var(--hover-bg);
 }
 
 .error {
