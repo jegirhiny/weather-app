@@ -102,7 +102,7 @@ $imperialMetric.on('click', () => {
     if ($weatherInfo.hasClass('active') && currentRes !== null) {
         let actual = currentRes.data.current;
 
-        $temperature.text(localStorage.getItem('unit-type') == 'imperial' ? `${actual.temp_f}°` : `${actual.wind_kph}°`);
+        $temperature.text(localStorage.getItem('unit-type') == 'imperial' ? `${actual.temp_f}°` : `${actual.temp_c}°`);
         $wind.text(localStorage.getItem('unit-type') == 'imperial' ? `${actual.wind_mph}mph` : `${actual.wind_kph}kph`);
         $precipitation.text(localStorage.getItem('unit-type') == 'imperial' ? `${actual.precip_in}in` : `${actual.precip_mm}mm`);
         $visibility.text(localStorage.getItem('unit-type') == 'imperial' ? `${actual.vis_miles}mi` : `${actual.vis_km}km`);
@@ -166,7 +166,12 @@ function createGraph() {
             },
             tooltips: {
                 titleFontSize: 20,
-                bodyFontSize: 40
+                bodyFontSize: 40,
+                callbacks: {
+                    label: function (tooltipItem, data) {
+                        return tooltipItem.yLabel + '°';
+                    }
+                }
             }
         }
     });
