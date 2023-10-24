@@ -67,13 +67,18 @@ $form.on('keyup', async (e) => {
         return;
     }
 
-    let response = await axios.get(`${baseURL}/${searchExtension}?key=${apiKey}&q=${searchTerm}&aqi=yes`);
+    try {
+        let response = await axios.get(`${baseURL}/${searchExtension}?key=${apiKey}&q=${searchTerm}&aqi=yes`);
 
-    let locations = response.data.map((location) => {
-        return `${location.name}, ${location.region}`;
-    })
+        let locations = response.data.map((location) => {
+            return `${location.name}, ${location.region}`;
+        })
 
-    updateSuggestions(locations.length === 0 ? [] : locations);
+        updateSuggestions(locations.length === 0 ? [] : locations);
+    } catch (error) {
+        $weatherInfo.removeClass('active');
+        $error.addClass('active');
+    }
 })
 
 $mainInfo.on('click', () => {
