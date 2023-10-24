@@ -1,4 +1,4 @@
-const apiKey = '9b60528ef675419baa2214630222305';
+const apiKey = 'YOUR_API_KEY_HERE';
 const baseURL = 'http://api.weatherapi.com/v1';
 const weatherExtension = 'current.json';
 const searchExtension = 'search.json';
@@ -9,6 +9,7 @@ const $form = $('#form');
 const $input = $('#search');
 const $suggestions = $('#suggestions');
 const $error = $('#error');
+const $noApiKey = $('#no-api-key');
 const $weatherInfo = $('#weather-info');
 const $mainInfo = $('#main-info');
 const $hourly = $('#hourly');
@@ -61,6 +62,12 @@ $form.on('submit', async (e) => {
 
 $form.on('keyup', async (e) => {
     const searchTerm = $input.val();
+
+    if(apiKey === 'YOUR_API_KEY_HERE') {
+        $weatherInfo.removeClass('active');
+        $noApiKey.addClass('active');
+        return;
+    }
 
     if(searchTerm == '' || e.key == 'Enter' || e.key == 'Return') {
         updateSuggestions([]);
