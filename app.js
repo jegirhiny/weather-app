@@ -133,7 +133,7 @@ $imperialMetric.on('click', () => {
 
 $(document).ready(() => {
     if (localStorage.getItem('data-theme') === null) {
-        localStorage.setItem('data-theme', 'dark');
+        localStorage.setItem('data-theme', 'light');
     }
 
     if (localStorage.getItem('unit-type') === null) {
