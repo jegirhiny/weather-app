@@ -9,18 +9,10 @@ This is a simple weather web application that allows users to check the current 
 
 ### Usage
 1. Clone this repository to your local machine.
-2. Obtain and replace the apiKey variable in `app.js`.
-3. Open the `index.html` file in a web browser to access the weather app.
-4. Enter a city name or zip code in the search input field.
-5. Press the "Enter" key to retrieve weather information for the specified location.
-6. The app will display the current weather conditions, temperature, precipitation, and other details.
-
-### API Key
-To make the app work, you'll need to obtain an API key from [WeatherAPI](https://www.weatherapi.com/) and replace the apiKey variable in `app.js`.
-
-```javascript
-const apiKey = 'YOUR_API_KEY_HERE';
-```
+2. Open the `index.html` file in a web browser to access the weather app.
+3. Enter a city name or zip code in the search input field.
+4. Press the "Enter" key to retrieve weather information for the specified location.
+5. The app will display the current weather conditions, temperature, precipitation, and other details.
 
 ### Features
 * Real-time weather data retrieval using the WeatherAPI.
