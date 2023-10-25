@@ -1,6 +1,4 @@
-const apiKey = 'YOUR_API_KEY_HERE';
 const baseURL = 'http://api.weatherapi.com/v1';
-const weatherExtension = 'current.json';
 const searchExtension = 'search.json';
 const forecastExtension = 'forecast.json';
 
@@ -50,7 +48,7 @@ $form.on('submit', async (e) => {
     updateSuggestions([]);
 
     try {
-        response = await axios.get(`${baseURL}/${forecastExtension}?key=${apiKey}&q=${searchTerm}&aqi=yes`);
+        response = await axios.get(`${baseURL}/${forecastExtension}?key=${API_KEY}&q=${searchTerm}&aqi=yes`);
 
         updateWeather();
         updateHourly();
@@ -63,19 +61,13 @@ $form.on('submit', async (e) => {
 $form.on('keyup', async (e) => {
     const searchTerm = $input.val();
 
-    if(apiKey === 'YOUR_API_KEY_HERE') {
-        $weatherInfo.removeClass('active');
-        $noApiKey.addClass('active');
-        return;
-    }
-
     if(searchTerm == '' || e.key == 'Enter' || e.key == 'Return') {
         updateSuggestions([]);
         return;
     }
 
     try {
-        let response = await axios.get(`${baseURL}/${searchExtension}?key=${apiKey}&q=${searchTerm}&aqi=yes`);
+        let response = await axios.get(`${baseURL}/${searchExtension}?key=${API_KEY}&q=${searchTerm}&aqi=yes`);
 
         let locations = response.data.map((location) => {
             return `${location.name}, ${location.region}`;
