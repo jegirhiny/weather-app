@@ -33,8 +33,8 @@ const API_KEY = 'YOUR_API_KEY_HERE';
 <img src="https://github.com/jegirhiny/weather-app/assets/93138298/6aab545f-344b-41e4-93ab-e4e43a2ce824" width="45%" alt="app-white-search">
 
 ### Features
-- **Real-time Weather Data**: Get up-to-the-minute weather information using the WeatherAPI.
-- **Comprehensive Weather Display**: View a wide range of weather parameters at a glance.
+- **Real-time Weather Data**: Get up-to-date weather information using the WeatherAPI.
+- **Weather Display**: View a wide range of weather parameters at a glance.
 - **Unit Conversion**: Easily switch between metric and imperial units to suit your preference.
 - **Customizable Themes**: Choose between light and dark themes for a personalized user interface.
 
