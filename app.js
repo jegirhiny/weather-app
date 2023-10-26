@@ -1,3 +1,4 @@
+const API_KEY = 'YOUR_API_KEY_HERE';
 const baseURL = 'http://api.weatherapi.com/v1';
 const searchExtension = 'search.json';
 const forecastExtension = 'forecast.json';
@@ -60,6 +61,12 @@ $form.on('submit', async (e) => {
 
 $form.on('keyup', async (e) => {
     const searchTerm = $input.val();
+
+    if(API_KEY === 'YOUR_API_KEY_HERE') {
+        $weatherInfo.removeClass('active');
+        $noApiKey.addClass('active');
+        return;
+    }
 
     if(searchTerm == '' || e.key == 'Enter' || e.key == 'Return') {
         updateSuggestions([]);
