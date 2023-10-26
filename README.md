@@ -16,7 +16,7 @@ This is a simple weather web application that allows users to check the current 
 6. The app will display the current weather conditions, temperature, precipitation, and other details.
 
 ### API Key
-To make the app work, you'll need to replace the API_KEY variable in ``app.js``. A replacement can obtained from [WeatherAPI](https://www.weatherapi.com/).
+To make the app work, replace the API_KEY variable in the ``app.js`` file with a new key obtained from [WeatherAPI](https://www.weatherapi.com/).
 
 ```javascript
 const API_KEY = 'YOUR_API_KEY_HERE';
