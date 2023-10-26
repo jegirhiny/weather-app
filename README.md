@@ -2,10 +2,10 @@
 This is a simple weather web application that allows users to check the current weather and forecast for a specific location. The app provides various weather-related information, including temperature, precipitation, wind, UV index, humidity, air quality, visibility, and more. Users can search for a city or zip code to get the weather details for their desired location.
 
 ### Project Structure
-* `/images` Various images used for icons and visual elements.
-* `index.html` The main HTML file that structures the web page.
-* `index.css`  The CSS file for styling the web page.
-* `app.js` The JavaScript file containing the application logic.
+- `/images` Various images used for icons and visual elements.
+- `index.html` The main HTML file that structures the web page.
+- `index.css`  The CSS file for styling the web page.
+- `app.js` The JavaScript file containing the application logic.
 
 ### Usage
 1. Clone this repository to your local machine.
@@ -22,17 +22,27 @@ To make the app work, replace the API_KEY variable in the ``app.js`` file with a
 const API_KEY = 'YOUR_API_KEY_HERE';
 ```
 
+### Screenshots
+<img src="https://github.com/jegirhiny/weather-app/assets/93138298/b49ce223-53f1-4cdc-b2ea-03ecc5ffcb93" width="45%" alt="app-white-search">
+<img src="https://github.com/jegirhiny/weather-app/assets/93138298/3ef24c5c-1946-4e3b-9302-4306693e8ba3" width="45%" alt="app-white-search">
+<img src="https://github.com/jegirhiny/weather-app/assets/93138298/e38227e7-0ed0-45e6-96ce-c7c0556086bb" width="45%" alt="app-white-search">
+<img src="https://github.com/jegirhiny/weather-app/assets/93138298/88c3a568-2e92-4935-80ab-c36a6d6ffc76" width="45%" alt="app-white-search">
+<img src="https://github.com/jegirhiny/weather-app/assets/93138298/147050d7-c17c-4b66-ac63-de84c5b0b010" width="45%" alt="app-white-search">
+<img src="https://github.com/jegirhiny/weather-app/assets/93138298/b094f007-d432-4b62-be47-05249681a120" width="45%" alt="app-white-search">
+<img src="https://github.com/jegirhiny/weather-app/assets/93138298/1cf94263-59c7-4aec-b736-58c4d02845ed" width="45%" alt="app-white-search">
+<img src="https://github.com/jegirhiny/weather-app/assets/93138298/6aab545f-344b-41e4-93ab-e4e43a2ce824" width="45%" alt="app-white-search">
+
 ### Features
-* Real-time weather data retrieval using the WeatherAPI.
-* Display of various weather parameters.
-* Switch between metric and imperial units.
-* Light and dark theme options for the user interface.
+- **Real-time Weather Data**: Get up-to-the-minute weather information using the WeatherAPI.
+- **Comprehensive Weather Display**: View a wide range of weather parameters at a glance.
+- **Unit Conversion**: Easily switch between metric and imperial units to suit your preference.
+- **Customizable Themes**: Choose between light and dark themes for a personalized user interface.
 
 ### Technologies
-* Axios for API requests
-* jQuery for DOM manipulation
-* JavaScript, HTML, and CSS
+- **Axios**: Utilized for making API requests.
+- **jQuery**: Empowering DOM manipulation.
+- **Front-end**: Built with JavaScript, HTML, and CSS.
 
-### Acknowledgments
-* Weather data provided by [WeatherAPI](https://www.weatherapi.com/).
-* Icons provided by [Boxicons](https://boxicons.com/?query=).
+### Acknowledgments 👏
+- Weather data provided by [WeatherAPI](https://www.weatherapi.com/).
+- Icons provided by [Boxicons](https://boxicons.com/?query=).
