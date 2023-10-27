@@ -43,6 +43,6 @@ const API_KEY = 'YOUR_API_KEY_HERE';
 - **jQuery**: Empowering DOM manipulation.
 - **Front-end**: Built with JavaScript, HTML, and CSS.
 
-### Acknowledgments 👏
+### Acknowledgments
 - Weather data provided by [WeatherAPI](https://www.weatherapi.com/).
 - Icons provided by [Boxicons](https://boxicons.com/?query=).
