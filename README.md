@@ -1,5 +1,5 @@
 # weather-app
-This is a simple weather web application that allows users to check the current weather and forecast for a specific location. The app provides various weather-related information, including temperature, precipitation, wind, UV index, humidity, air quality, visibility, and more. Users can search for a city or zip code to get the weather details for their desired location.
+A simple web application that allows users to check the current weather and forecast for a specific location. The app provides various weather-related information, including temperature, precipitation, wind, UV index, humidity, air quality, visibility, and more. Users can search for a city or zip code to get the weather details for their desired location.
 
 ### Project Structure
 - `/images` Various images used for icons and visual elements.
